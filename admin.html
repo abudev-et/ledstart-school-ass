@@ -5,5 +5,21 @@
 </head>
 <body>
     <h1>Welcome Admin!</h1>
+
+    <button id="logout">Logout</button>
+
+    <script>
+        const storedUser = JSON.parse(localStorage.getItem("user"));
+
+        if (!storedUser) {
+            // If no user is found in localStorage, redirect to login page
+            window.location.href = "index.html";
+        }
+        document.getElementById('logout').addEventListener('click', () => {
+            localStorage.removeItem('user'); // Clear user session
+            window.location.href = "index.html"; // Redirect to login page
+        });
+    </script>
+
 </body>
 </html>
