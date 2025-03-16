@@ -8,17 +8,21 @@
 
     <button id="logout">Logout</button>
 
-    <script>
-        const storedUser = JSON.parse(localStorage.getItem("user"));
-
-        if (!storedUser) {
-            // If no user is found in localStorage, redirect to login page
-            window.location.href = "index.html";
-        }
-        document.getElementById('logout').addEventListener('click', () => {
-            localStorage.removeItem('user'); // Clear user session
+    <script type="module">
+        // import { logout } from "./script.js"
+        function logout() {
+            localStorage.removeItem('user'); // Remove user session
             window.location.href = "index.html"; // Redirect to login page
-        });
+        }
+        // Ensure user is logged in and has the correct role
+        const storedUser = JSON.parse(localStorage.getItem("user"));
+    
+        if (!storedUser || (window.location.pathname.includes("admin.html") && storedUser.role !== "admin") || 
+            (window.location.pathname.includes("student.html") && storedUser.role !== "student")) {
+            window.location.href = "index.html"; // Redirect if not authorized
+        }
+    
+        document.getElementById('logout').addEventListener('click', logout);
     </script>
 
 
