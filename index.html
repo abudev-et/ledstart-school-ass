@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        .login-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .login-container input[type="email"],
+        .login-container input[type="password"],
+        .login-container button {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .login-container button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .login-container button:hover {
+            background-color: #0056b3;
+        }
+
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button id="login">Login</button>
+        <div id="error" class="error-message"></div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCN6YgQ5UZKeXKr2Xnu6NOI19GKaInDEcs",
+            authDomain: "abdu-school.firebaseapp.com",
+            databaseURL: "https://abdu-school-default-rtdb.firebaseio.com",
+            projectId: "abdu-school",
+            storageBucket: "abdu-school.firebasestorage.app",
+            messagingSenderId: "511143470648",
+            appId: "1:511143470648:web:1bf8943b322b725b1ea8cd",
+            measurementId: "G-CFTFM2W1W0"
+            };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorElement = document.getElementById('error');
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    checkUserRole(user.uid);
+                })
+                .catch((error) => {
+                    errorElement.textContent = error.message;
+                });
+        }
+
+        document.getElementById('login').addEventListener('click', login);
+
+        function checkUserRole(uid) {
+            const userDocRef = doc(db, "users", uid);
+            getDoc(userDocRef)
+                .then((docSnapshot) => {
+                    if (docSnapshot.exists()) {
+                        const userData = docSnapshot.data();
+                        const role = userData.role;
+
+                        if (role === "admin") {
+                            window.location.href = "admin.html"; // Redirect to admin page
+                        } else if (role === "student") {
+                            window.location.href = "student.html"; // Redirect to student page
+                        } else {
+                            alert("Role not defined");
+                        }
+                    } else {
+                        alert("User data not found");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error getting user data:", error);
+                    alert("Error checking user role.");
+                });
+        }
+
+
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                checkUserRole(user.uid);
+            }
+        });
+
+    </script>
+</body>
+</html>
