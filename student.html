@@ -1,30 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Student Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
 </head>
 <body>
-    <h1>Welcome Student!</h1>
+    <h2 id="welcome-message"></h2>
 
+    <!-- Logout Button -->
     <button id="logout">Logout</button>
 
-    <script type="module">
-        // import { logout } from "./script.js"
-        function logout() {
-            localStorage.removeItem('user'); // Remove user session
-            window.location.href = "index.html"; // Redirect to login page
-        }
-        // Ensure user is logged in and has the correct role
-        const storedUser = JSON.parse(localStorage.getItem("user"));
-    
-        if (!storedUser || (window.location.pathname.includes("admin.html") && storedUser.role !== "admin") || 
-            (window.location.pathname.includes("student.html") && storedUser.role !== "student")) {
-            window.location.href = "index.html"; // Redirect if not authorized
-        }
-    
-        document.getElementById('logout').addEventListener('click', logout);
-    </script>
-
-
+    <script type="module" src="auth.js"></script>
 </body>
 </html>

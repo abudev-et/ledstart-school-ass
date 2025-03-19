@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
     <style>
         body {
@@ -50,19 +52,22 @@
 
         .error-message {
             color: red;
+            font-size: 14px;
             text-align: center;
-            margin-top: 10px;
+            margin-top: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
+    <div class="login-container" id="login-container" style="display: block;">
         <h2>Login</h2>
         <input type="email" id="email" placeholder="Email" required>
         <input type="password" id="password" placeholder="Password" required>
         <button id="login">Login</button>
         <div id="error" class="error-message"></div>
     </div>
+
+    <div id="loading" style="display: none; text-align: center; color: blue;">Loading...</div>
 
     <script type="module" src="auth.js"></script>
 </body>

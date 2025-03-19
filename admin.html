@@ -1,28 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Admin Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
 </head>
 <body>
-    <h1>Welcome Admin!</h1>
-
-    <button id="logout">Logout</button>
-
-    <script>
-        // Ensure only logged-in admins can access this page
-        document.addEventListener("DOMContentLoaded", () => {
-            const storedUser = JSON.parse(localStorage.getItem("user"));
-            if (!storedUser || storedUser.role !== "admin") {
-                window.location.href = "index.html"; // Redirect if unauthorized
-            }
-        });
-    </script>
-
-    <script type="module">
-        import { logout } from "./auth.js";
-        document.getElementById('logout').addEventListener('click', logout);
-    </script>
+    <h2>Welcome, Admin!</h2>
+    
+    <!-- Create Student Form -->
+    <div id="student-form" style="display: block;">
+        <h3>Create Student</h3>
+        <input type="text" id="student-name" placeholder="Student Name">
+        <input type="email" id="student-email" placeholder="Student Email">
+        <input type="password" id="student-password" placeholder="Student Password">
+        <button id="create-student">Create Student</button>
+        <p id="student-message"></p>
+    </div>
+    
+    <div id="student-loading" style="display: none; text-align: center; color: blue;">Creating student...</div>
     
 
+    <!-- Logout Button -->
+    <button id="logout">Logout</button>
+
+    <script type="module" src="auth.js"></script>
 </body>
 </html>
+
+
